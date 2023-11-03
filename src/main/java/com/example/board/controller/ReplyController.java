@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.board.domain.vo.Criteria;
+import com.example.board.domain.vo.ReplyDTO;
 import com.example.board.domain.vo.ReplyVO;
 import com.example.board.service.ReplyService;
 
@@ -41,10 +42,10 @@ public class ReplyController {
 	// 게시글 댓글 전체 조회 
 	// XML로도 보낼수 있고 JSON으로도 보낼 수 있다 !! 
 	@GetMapping(value="/{bno}/{page}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<List<ReplyVO>> getList(@PathVariable("bno") Long bno,
+	public ResponseEntity<ReplyDTO> getList(@PathVariable("bno") Long bno,
 			@PathVariable int page) {
 		log.info("getList... : " + bno);
-		return new ResponseEntity<>(replyService.findAllByBNO(new Criteria(page, 10), bno), HttpStatus.OK);
+		return new ResponseEntity<>(new ReplyDTO(replyService.findAllByBNO(new Criteria(page, 10), bno), replyService.getTotal(bno)), HttpStatus.OK);
 	}
 	
 	// 댓글 1개 조회 

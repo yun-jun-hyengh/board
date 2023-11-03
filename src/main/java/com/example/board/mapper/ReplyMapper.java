@@ -16,4 +16,5 @@ public interface ReplyMapper {
 	public int deleteAll(Long bno);
 	public int update(ReplyVO replyVO);
 	public List<ReplyVO> selectAll(@Param("cri") Criteria criteria, @Param("bno") Long bno);
+	public int getTotal(Long bno);
 }

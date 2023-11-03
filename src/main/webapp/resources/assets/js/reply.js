@@ -35,9 +35,9 @@
  		// getJSON()은 빠르고 편하게 요청 후 JSON 데이터를 방아오기 위해 사용한다 
  		// 전송방식은 GET방식이다.
  		// .json을 붙힌 이유는 xml이 default로 설정되어 있기 때문에 json 형식으로 전달받기 위함 !!
- 		$.getJSON("/replies/" + bno + "/" + page + ".json", function(list){
+ 		$.getJSON("/replies/" + bno + "/" + page + ".json", function(result){
  			if(callback){
- 				callback(list);
+ 				callback(result);
  			}
  		}).fail(function(xhr, status, err){
  			if(error){

@@ -15,4 +15,5 @@ public interface ReplyService {
 	public boolean removeAllByBNO(Long bno);
 	public boolean modify(ReplyVO replyVO);
 	public List<ReplyVO> findAllByBNO(Criteria criteria, Long bno);
+	public int getTotal(Long bno);
 }

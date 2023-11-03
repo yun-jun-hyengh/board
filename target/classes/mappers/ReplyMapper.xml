@@ -42,4 +42,9 @@
 		]]>
 	</select>
 	
+	<select id="getTotal" resultType="int">
+		select count(rno) from tbl_reply
+		where bno = #{bno}
+	</select>
+	
 </mapper>

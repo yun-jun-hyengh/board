@@ -33,4 +33,8 @@ public class ReplyDAO {
 	public List<ReplyVO> findAllByBNO(Criteria criteria, Long bno){
 		return replyMapper.selectAll(criteria, bno);
 	}
+	
+	public int getTotal(Long bno) {
+		return replyMapper.getTotal(bno);
+	}
 }

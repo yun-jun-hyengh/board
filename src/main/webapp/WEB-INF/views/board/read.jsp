@@ -80,7 +80,8 @@
 									
 								</ul>
 							</form>
-							
+							<div class="paging" style="text-align: center;">
+							</div>
 						</div>
 					</div>
 				</div>
@@ -100,11 +101,49 @@
 		let bno = "${board.bno}";
 		const repliesUL = $("ul.replies");
 		showList(page);
+		
+		function showReplyPage(total){
+			let endNum = Math.ceil(page / 10.0) * 10;
+			let startNum = endNum - 9;
+			let prev = startNum != 1;
+			let next = false;
+			let str = "";
+			
+			if(endNum * 10 >= total){
+				endNum = Math.ceil(total / 10.0)
+			}
+			
+			if(endNum * 10 < total){
+				next = true;
+			}
+			
+			if(prev){
+				str += `<a class='changePage' href=`+ (startNum - 1) + `><code>&lt;</code></a>`;
+			}
+			
+			for(let i = startNum; i <= endNum; i++){
+				if(page == i){
+					str += `<code>` + i + `</code>`;
+				} else {
+					str += `<a class='changePage' href=`+ i + `><code>` + i + `</code></a>`;
+				}
+				
+			}
+			
+			if(next){
+				str += `<a class='changePage' href=`+ (endNum + 1) + `><code>&gt;</code></a>`;
+			}
+			
+			$("div.paging").html(str);
+		}
+		
 		function showList(page){
 			replyService.getList({
 				bno: bno,
 				page: page
-			}, function(list){
+			}, function(result){
+				let list = result.list;
+				let total = result.total;
 				let str = "";
 				let date = "";
 				for(let i = 0; i < list.length; i++){
@@ -124,8 +163,15 @@
 					str += `</li>`;							
 				}
 				repliesUL.html(str);
+				showReplyPage(total);
 			});
 		}
+		
+		$("div.paging").on("click","a.changePage", function(e){
+			e.preventDefault();
+			page = $(this).attr("href");
+			showList(page);
+		});
 		
 		$("a.finish").on("click", function(e){
 			e.preventDefault();
