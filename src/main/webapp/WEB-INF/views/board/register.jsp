@@ -10,6 +10,18 @@
 		<link rel="stylesheet" href="/resources/assets/css/main.css" />
 		<style>
 			body {transform: scale(0.8); margin-top: -50px;}
+			.uploadResult{
+				width: 100%;
+			}
+			
+			.uploadResult ul{
+				display: flex;
+				justify-content: center;
+			}
+			
+			.uploadResult ul li{
+				list-style: none;
+			}
 		</style>
 	</head>
 	<body class="is-preload">
@@ -27,7 +39,7 @@
 					<h3><a href="/board/list" class="button small">목록 보기</a></h3>
 					<div class="content">
 						<div class="form">
-							<form method="post" action="/board/register" id="registForm">
+							<form method="post" action="/board/register" id="registForm" enctype="multipart/form-data">
 								<div class="fields">
 									<div class="field">
 										<h4>제목</h4>
@@ -40,6 +52,15 @@
 									<div class="field">
 										<h4>작성자</h4>
 										<input name="writer" placeholder="Writer" type="text" />
+									</div>
+									<div class="field">
+										<h4>첨부파일</h4>
+										<input name="multipartFiles" type="file" multiple />
+									</div>
+									<div class="field">
+										<div class="uploadResult">
+											<ul></ul>
+										</div>
 									</div>
 								</div>
 								<ul class="actions special">
@@ -59,4 +80,48 @@
 	<script src="/resources/assets/js/breakpoints.min.js"></script>
 	<script src="/resources/assets/js/util.js"></script>
 	<script src="/resources/assets/js/main.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(e){
+			var $uploadResult = $(".uploadResult ul");
+			var regex = new RegExp("(.*/)\.(exe|sh|zip|alz)$");
+			var maxSize = 1024 * 1024 * 20; // 20MB
+			
+			$("input[type='file']").change(function(e){
+				var formData = new FormData();
+				var $inputFile = $(this);
+				var files = $inputFile[0].files;
+				console.log(files);
+				for(let i = 0; i < files.length; i++){
+					if(!checkExtension(files[i].name, files[i].size)){
+						return false;
+					}
+					formData.append("multipartFiles", files[i]);
+				}
+				$.ajax({
+					url : '/upload',
+					processData: false,
+					contentType: false,
+					data : formData,
+					type : "post",
+					dataType : "json",
+					success : function(result){
+						console.log(result);
+					}
+				});
+			});
+			
+			function checkExtension(fileName, fileSize){
+				if(regex.test(fileName)){
+					alert("업로드할 수 없는 파일의 형식입니다.");
+					return false;
+				}
+				
+				if(fileSize >= maxSize){
+					alert("파일 사이즈 초과");
+					return false;
+				}
+				return true;
+			}
+		});
+	</script>
 </html>
