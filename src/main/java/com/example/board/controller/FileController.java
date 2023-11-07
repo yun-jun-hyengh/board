@@ -57,6 +57,7 @@ public class FileController {
 			String originalFileName = multipartFile.getOriginalFilename();
 			String fileName = null;
 			
+			// random한 UUID를 생성하여 원본 이름과 같은 파일들이 다른 이름으로 생성되도록 한다
 			UUID uuid = UUID.randomUUID();
 			fileName = uuid.toString() + "_" + originalFileName;
 			
