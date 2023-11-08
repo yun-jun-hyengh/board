@@ -72,7 +72,7 @@ public class FileController {
 				
 				InputStream in = new FileInputStream(file);
 				
-				if(checkImageType(file)) { //업로드된 파일이 이미지라면
+				if(checkImageType(file)) { //업로드된 파일이 이미지라면(썸네일 처리) 
 					fileVO.setFileType(true);
 					FileOutputStream out = new FileOutputStream(new File(uploadPath, "t_" + fileName));
 					Thumbnailator.createThumbnail(in, out, 100, 100);
@@ -109,7 +109,7 @@ public class FileController {
 	public ResponseEntity<byte[]> display(String fileName){
 		log.info("file name : " + fileName);
 		
-		File file = new File("C:/upload" + fileName);
+		File file = new File("C:/upload/" + fileName); 
 		log.info("file : " + file);
 		
 		ResponseEntity<byte[]> result = null;

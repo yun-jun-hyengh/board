@@ -85,6 +85,28 @@
 			var $uploadResult = $(".uploadResult ul");
 			var regex = new RegExp("(.*/)\.(exe|sh|zip|alz)$");
 			var maxSize = 1024 * 1024 * 20; // 20MB
+			var str = "";
+			function showUploadResult(files){
+				$(files).each(function(i, file){
+					if(!file.fileType){
+						str += "<li data-filename='" + file.fileName + "' data-uuid='" + file.uuid + "' data-uploadpath='" + file.uploadPath + "' data-filetype='" + file.fileType + "'>";
+						str += "<div>";
+						str += "<img src='/resources/images/attach.png' width='100'>";
+						str += "</div>";
+						str += "<span>" + file.fileName + "</span>"
+						str += "</li>";
+					} else {
+						var fileName = encodeURIComponent(file.uploadPath + "/t_" + file.uuid + "_" + file.fileName);
+						str += "<li>";
+						str += "<div>";
+						str += "<a href=''>";
+						str += "<img src='/display?fileName=" + fileName + "' width='100'>";
+						str += "</div>";
+						str += "</li>";
+					}
+				});
+				$uploadResult.append(str);
+			}
 			
 			$("input[type='file']").change(function(e){
 				var formData = new FormData();
@@ -106,6 +128,7 @@
 					dataType : "json",
 					success : function(result){
 						console.log(result);
+						showUploadResult(result);
 					}
 				});
 			});
