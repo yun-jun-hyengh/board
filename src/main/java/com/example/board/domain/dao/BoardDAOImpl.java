@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.example.board.domain.vo.BoardDTO;
 import com.example.board.domain.vo.BoardVO;
 import com.example.board.domain.vo.Criteria;
 import com.example.board.mapper.BoardMapper;
@@ -16,7 +17,7 @@ public class BoardDAOImpl implements BoardDAO {
 	private BoardMapper boardMapper;
 	
 	@Override
-	public void register(BoardVO board) {
+	public void register(BoardDTO board) {
 		// TODO Auto-generated method stub
 		boardMapper.insert(board);
 	}

@@ -31,7 +31,7 @@ public class BoardServiceTests {
 		boardVO.setContent("새로 작성한 글 내용");
 		boardVO.setWriter("hds1234");
 		
-		boardService.register(boardVO);
+		//boardService.register(boardVO);
 		log.info("생성된 게시글 번호 : " + boardVO.getBno());
 	}
 	

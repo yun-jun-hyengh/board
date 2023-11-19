@@ -8,6 +8,9 @@
 	</settings>
 	<typeAliases>
 		<typeAlias type="com.example.board.domain.vo.BoardVO" alias="boardVO" />
+		<typeAlias type="com.example.board.domain.vo.BoardDTO" alias="boardDTO" />
 		<typeAlias type="com.example.board.domain.vo.ReplyVO" alias="replyVO" />
+		<typeAlias type="com.example.board.domain.vo.FileVO" alias="fileVO" />
+		<typeAlias type="com.example.board.domain.vo.FileDTO" alias="fileDTO" />
 	</typeAliases>
 </configuration>

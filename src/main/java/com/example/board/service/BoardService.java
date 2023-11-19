@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.board.domain.vo.BoardDTO;
 import com.example.board.domain.vo.BoardVO;
 import com.example.board.domain.vo.Criteria;
 
 @Service
 public interface BoardService {
 	// 게시글 등록
-	public void register(BoardVO board);
+	public void register(BoardDTO boardDTO);
 	// 특정 게시글 가져오기
 	public BoardVO get(Long bno);
 	// 게시글 수정

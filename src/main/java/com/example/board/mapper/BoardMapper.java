@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.board.domain.vo.BoardDTO;
 import com.example.board.domain.vo.BoardVO;
 import com.example.board.domain.vo.Criteria;
 
@@ -12,7 +13,7 @@ public interface BoardMapper {
 	
 	public List<BoardVO> getList(Criteria criteria);
 	
-	public void insert(BoardVO board);
+	public void insert(BoardDTO board);
 	
 	public BoardVO read(Long bno);
 	

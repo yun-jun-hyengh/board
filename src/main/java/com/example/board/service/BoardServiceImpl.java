@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.board.domain.dao.BoardDAO;
+import com.example.board.domain.dao.FileDAO;
+import com.example.board.domain.vo.BoardDTO;
 import com.example.board.domain.vo.BoardVO;
 import com.example.board.domain.vo.Criteria;
+import com.example.board.domain.vo.FileDTO;
+import com.example.board.domain.vo.FileVO;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -15,9 +19,22 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private BoardDAO boardDAO;
 	
+	@Autowired
+	private FileDAO fileDAO;
+	
 	@Override
-	public void register(BoardVO board) {
-		boardDAO.register(board);
+	public void register(BoardDTO boardDTO) {
+		boardDAO.register(boardDTO);
+		for(FileVO file : boardDTO.getFiles()) {
+			FileDTO fileDTO = new FileDTO();
+			fileDTO.setUuid(file.getUuid());
+			fileDTO.setUploadPath(file.getUploadPath());
+			fileDTO.setFileName(file.getFileName());
+			fileDTO.setFileType(file.isFileType());
+			fileDTO.setBno(boardDTO.getBno());
+			
+			fileDAO.register(fileDTO);
+		}
 	}
 
 	@Override

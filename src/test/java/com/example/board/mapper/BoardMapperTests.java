@@ -31,7 +31,7 @@ public class BoardMapperTests {
 		board.setContent("새로 작성한 글 내용5");
 		board.setWriter("user05");
 		
-		boardMapper.insert(board);
+		//boardMapper.insert(board);
 		
 		log.info(board);
 	}
