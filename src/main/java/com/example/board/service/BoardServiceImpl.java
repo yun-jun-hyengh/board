@@ -61,6 +61,11 @@ public class BoardServiceImpl implements BoardService {
 	public int getTotal(Criteria criteria) {
 		return boardDAO.getTotal(criteria);
 	}
+
+	@Override
+	public List<FileVO> getFiles(Long bno) {
+		return boardDAO.getFiles(bno);
+	}
 	
 
 }

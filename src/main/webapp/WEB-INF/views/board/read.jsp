@@ -12,6 +12,19 @@
 			body {transform: scale(0.8); margin-top: -50px;}
 			div.line{boarder-bottom: 1px solid #ff8b77;}
 			h4.reply-h4{margin-bottom: 0;}
+			
+			.uploadResult {
+				width: 100%;
+			}
+			
+			.uploadResult ul {
+				display: flex;
+				justify-content: center;
+			}
+			
+			.uploadResult ul li {
+				list-style: none;
+			}
 		</style>
 	</head>
 	<body class="is-preload">
@@ -29,7 +42,7 @@
 					<h3><a href="/board/list${criteria.params}" class="button small">목록 보기</a></h3>
 					<div class="content">
 						<div class="form">
-							<form action="/board/remove">
+							<form action="/board/remove" name="deleteForm">
 								<div class="fields">
 									<div class="field">
 										<h4>번호</h4>
@@ -46,6 +59,12 @@
 									<div class="field">
 										<h4>작성자</h4>
 										<input type="text" name="writer" value="${board.writer}" readonly="readonly">
+									</div>
+									<div class="field">
+										<h4>첨부파일</h4>
+										<div class="uploadResult">
+											<ul></ul>
+										</div>
 									</div>
 								</div>
 								<ul class="actions special">
@@ -270,6 +289,61 @@
 					showList(page);
 				});
 			}
+		});
+		
+		
+		// 첨부파일 
+		$(document).ready(function(e){
+			var $uploadResult = $(".uploadResult ul");
+			
+			$.getJSON("/board/files", {bno: "${board.bno}"}, function(files){
+				showUploadResult(files);
+			});
+			
+			function showUploadResult(files){
+				var str = "";
+				
+				$(files).each(function(i, file){
+					var thumbFileName = encodeURIComponent(file.uploadPath + "/t_" + file.uuid + "_" + file.fileName);
+					var fileName = encodeURIComponent(file.uploadPath + "/" + file.uuid + "_" + file.fileName);
+					if(!file.fileType){
+						str += "<li data-filename='" + file.fileName + "' data-uuid='" + file.uuid + "' data-uploadpath='" + file.uploadPath + "' data-filetype='" + file.fileType + "'>";
+						str += "<div>";
+						str += "<a href='/download?fileName=" + fileName +"'>"
+						str += "<img src='/resources/images/attach.png' width='100'>";
+						str += "</a>"
+						str += "</div>";
+						str += "<span>" + file.fileName + "</span>"
+						str += "</li>";
+						
+					}else{
+						str += "<li data-filename='" + file.fileName + "' data-uuid='" + file.uuid + "' data-uploadpath='" + file.uploadPath + "' data-filetype='" + file.fileType + "'>";
+						str += "<div>";
+						str += "<a href='/download?fileName=" + fileName +"'>"
+						str += "<img src='/display?fileName=" + thumbFileName + "' width='100'>";
+						str += "</a>"
+						str += "</div>";
+						str += "<span>" + file.fileName + "</span>"
+						str += "</li>";
+					}
+				});
+				$uploadResult.append(str);
+			}
+		});
+		
+		$("input[type='submit']").on("click", function(e){
+			$(".uploadResult ul li").each(function(i, li){
+				var fileName = encodeURIComponent($(li).data("filetype") ? $(li).data("uploadpath") + "/t_" + $(li).data("uuid") + "_" + $(li).data("filename") : 
+					$(li).data("uploadpath") + "/" + $(li).data("uuid") + "_" + $(li).data("filename"));
+				$.ajax({
+					url: "/deleteFile",
+					type: "post",
+					data: {fileName: fileName, fileType: $(li).data("filetype")},
+					success: function(){
+						document.deleteForm.submit();
+					}
+				});
+			});
 		});
 		
 	</script>

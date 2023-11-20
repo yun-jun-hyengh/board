@@ -10,6 +10,18 @@
 		<link rel="stylesheet" href="/resources/assets/css/main.css" />
 		<style>
 			body {transform: scale(0.8); margin-top: -50px;}
+			.uploadResult {
+				width: 100%;
+			}
+			
+			.uploadResult ul {
+				display: flex;
+				justify-content: center;
+			}
+			
+			.uploadResult ul li {
+				list-style: none;
+			}
 		</style>
 	</head>
 	<body class="is-preload">
@@ -48,6 +60,15 @@
 										<h4>작성자</h4>
 										<input type="text" name="writer" value="${board.writer}">
 									</div>
+									<div class="field">
+										<h4>첨부파일</h4>
+										<input name="multipartFiles" type="file" multiple/>
+									</div>
+									<div class="field">
+										<div class="uploadResult">
+											<ul></ul>
+										</div>
+									</div>
 								</div>
 								<ul class="actions special">
 									<li>
@@ -69,4 +90,7 @@
 	<script src="/resources/assets/js/breakpoints.min.js"></script>
 	<script src="/resources/assets/js/util.js"></script>
 	<script src="/resources/assets/js/main.js"></script>
+	<script type="text/javascript">
+		
+	</script>
 </html>

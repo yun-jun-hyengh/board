@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.example.board.domain.vo.BoardDTO;
 import com.example.board.domain.vo.BoardVO;
 import com.example.board.domain.vo.Criteria;
+import com.example.board.domain.vo.FileVO;
 
 @Service
 public interface BoardService {
@@ -22,4 +23,6 @@ public interface BoardService {
 	public List<BoardVO> getList(Criteria criteria);
 	// 전체 게시글 개수 
 	public int getTotal(Criteria criteria);
+	
+	public List<FileVO> getFiles(Long bno);
 }

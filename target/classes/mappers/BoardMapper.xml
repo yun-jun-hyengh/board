@@ -76,4 +76,9 @@
 		</where>
 	</select>
 	
+	<select id="getFiles" resultType="fileVO">
+		SELECT UUID, UPLOAD_PATH, FILE_NAME, FILE_TYPE
+		FROM TBL_FILE WHERE BNO = #{bno}
+	</select>
+	
 </mapper>

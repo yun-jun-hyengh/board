@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.example.board.domain.vo.BoardDTO;
 import com.example.board.domain.vo.BoardVO;
 import com.example.board.domain.vo.Criteria;
+import com.example.board.domain.vo.FileVO;
 
 @Mapper
 public interface BoardMapper {
@@ -22,4 +23,6 @@ public interface BoardMapper {
 	public int update(BoardVO board);
 	
 	public int getTotal(Criteria criteria);
+	
+	public List<FileVO> getFiles(Long bno);
 }

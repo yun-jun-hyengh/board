@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -123,21 +128,53 @@ public class FileController {
 		return result;
 	}
 	
+	@GetMapping(value = "/download", produces=MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	@ResponseBody
+	public ResponseEntity<Resource> download(String fileName) {
+		Resource resource = new FileSystemResource("C:/upload/" + fileName);
+		
+		if(!resource.exists()) {
+			return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+		}
+		HttpHeaders header = new HttpHeaders();
+		
+		String resourceName = resource.getFilename();
+		resourceName = resourceName.substring(resourceName.indexOf("_") + 1);
+		
+		try {
+			header.add("Content-Disposition", "attachment; filename=" + new String(resourceName.getBytes("UTF-8"), "ISO-8859-1"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+	}
+	
+	@PostMapping("/deleteFile")
+	@ResponseBody
+	public void delete(@RequestParam("fileName") String fileName, @RequestParam("fileType") boolean fileType) {
+		File file = null;
+		try {
+			file = new File("C:/upload/" + URLDecoder.decode(fileName, "UTF-8"));
+			
+			// Garbage Collection 수행을 명령하는 메소드 
+			// GC가 발생하면 소멸의 대상이 되는 인스턴스는 결정되지만 이것이 실제 소멸로 
+			// 바로 이어지지는 않는다. 왜나면 인스턴스의 실제 소멸로 이어지지 않은 상태에서 
+			// 프로그램이 종료될 수 도 있다. 
+			// 종료가 되면 어차피 인스턴스는 소멸 되기 때문
+			System.gc();
+			
+			// GC에 의해서 소멸이 결정된 인스턴스를 즉시 소멸시키는 메소드
+			System.runFinalization();
+			
+			file.delete();
+			if(fileType) {
+				file = new File(file.getPath().replace("t_", ""));
+				file.delete();
+			}
+		} catch(UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
